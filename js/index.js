@@ -128,14 +128,21 @@ function mainPainting(data, currMinutes) {
     };
      main.appendChild(sectionTag);
    };
-  document.querySelectorAll('.movie-seances__time').forEach(a => a.addEventListener('click', chooseSession));
+  document.querySelectorAll('.movie-seances__time').forEach(a => a.addEventListener('click', chosenSession));
 };
 
-// Функция для 
-function chooseSession(event) {
-  //event.preventDefault();
+// Функция определения данных о выбранном сеансе 
+function chosenSession(event) {
+  event.preventDefault();
   const selectedSeance = event.target.dataset;
   localStorage.clear();
+
+  let dayTimeStamp = 0; 
+  document.querySelectorAll('.page-nav__day').forEach((a, index) => {
+    if (a.classList.contains('page-nav__day_chosen')) {
+      dayTimeStamp = index * 24 * 3600;
+    }
+  });
 
   storedData.films.result.forEach(film => {
     if (film.film_id === selectedSeance.filmid){
@@ -144,15 +151,18 @@ function chooseSession(event) {
   });
   storedData.seances.result.forEach(seance => {
     if (seance.seance_id === selectedSeance.seanceid){
-      localStorage.setItem('seanceStart',seance.seance_time);      
+      localStorage.setItem('seanceId',seance.seance_id);
+      localStorage.setItem('seanceStart',seance.seance_time);
+      localStorage.setItem('timestamp',  `${+seance.seance_start * 60 + dayTimeStamp}`);      
     };
   });
   storedData.halls.result.forEach(hall => {
     if (hall.hall_id === selectedSeance.hallid){
+      localStorage.setItem('hallId', hall.hall_id);
       localStorage.setItem('hallName', hall.hall_name);
       localStorage.setItem('hallPrice', hall.hall_price_standart);
       localStorage.setItem('hallPriceVip', hall.hall_price_vip);
-      localStorage.setItem('hallConfig', hall.hall_config);    
+      localStorage.setItem('hallConfig', hall.hall_config);  
     };
   }); 
 };
