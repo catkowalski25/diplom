@@ -133,7 +133,7 @@ function mainPainting(data, currMinutes) {
 
 // Функция определения данных о выбранном сеансе 
 function chosenSession(event) {
-  event.preventDefault();
+  //event.preventDefault();
   const selectedSeance = event.target.dataset;
   localStorage.clear();
 
