@@ -81,7 +81,7 @@ function bookChairs(event) {
   });
   if (booked !=='' && price > 0) {
     localStorage.setItem('hallConfigBooked', document.querySelector('.conf-step__wrapper').innerHTML);
-    localStorage.setItem('booked', booked);
+    localStorage.setItem('booked', booked.slice(0,-2));
     localStorage.setItem('bookedPrice', price);
     document.location.href = 'payment.html';
   };
