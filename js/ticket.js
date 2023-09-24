@@ -4,10 +4,8 @@ document.querySelector('.ticket__hall').innerHTML = localStorage.getItem('hallNa
 document.querySelector('.ticket__chairs').innerHTML = localStorage.getItem('booked');
 
 const qrString = `Фильм "${localStorage.getItem('filmName')}" в ${localStorage.getItem('seanceStart')}, ${localStorage.getItem('hallName')} места: ${localStorage.getItem('booked')}.`;
-console.log(qrString);
 
 const qr = QRCreator(qrString);
-console.log (qr)
 document.querySelector('.ticket__info-qr').append(qr.result);
 
 document.querySelector('.acceptin-button').addEventListener('click', () => qr.download())

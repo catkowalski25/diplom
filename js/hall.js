@@ -20,7 +20,6 @@ function GetData(timestamp, hallId, seanceId) {
   })
  .then((response) => response.json())
  .then((data) => {
-    console.log(data);
     if (data) {
       storedHtml = data;
       hallConfiguration.innerHTML = data;
