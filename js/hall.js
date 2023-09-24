@@ -3,37 +3,26 @@ document.querySelector('.buying__info-start').innerHTML = `Начало сеан
 document.querySelector('.buying__info-hall').innerHTML = localStorage.getItem('hallName');
 document.querySelector('.price-standart').innerHTML = localStorage.getItem('hallPrice');
 document.querySelector('.price-vip').innerHTML = localStorage.getItem('hallPriceVip');
-let storedHtml;
 const hallConfiguration = document.querySelector('.conf-step__wrapper');
 const button = document.querySelector('.acceptin-button');
 button.setAttribute('disabled', '');
 
-GetData(localStorage.getItem('timestamp'), localStorage.getItem('hallId'), localStorage.getItem('seanceId'));
-// Функция для запроса данных с сервера
-function GetData(timestamp, hallId, seanceId) {
-   fetch('https://jscp-diplom.netoserver.ru/', {
-    method: 'POST', 
-    body: `event=get_hallConfig&timestamp=${timestamp}&hallId=${hallId}&seanceId=${seanceId}`, 
-    headers: {
-      'Content-type': '	application/x-www-form-urlencoded',
-    },
-  })
- .then((response) => response.json())
- .then((data) => {
-    if (data) {
-      storedHtml = data;
-      hallConfiguration.innerHTML = data;
-    } else {
-      hallConfiguration.innerHTML = localStorage.getItem('hallConfig');
-    };
-    
+const body = `event=get_hallConfig&timestamp=${localStorage.getItem('timestamp')}&hallId=${localStorage.getItem('hallId')}&seanceId=${localStorage.getItem('seanceId')}`;
 
+requestData(body, showHall, localStorage.getItem('hallConfig'));
 
-    hallConfiguration.querySelectorAll('.conf-step__chair').forEach(span => span.addEventListener('click', plaseChoose));
- });
+// Функция для отрисовки конфигурации зала
+function showHall(data, emptyHallConfig) {
+  if (data) {
+    hallConfiguration.innerHTML = data;
+  } else {
+    hallConfiguration.innerHTML = emptyHallConfig;
+  };
+  
+  hallConfiguration.querySelectorAll('.conf-step__chair').forEach(span => span.addEventListener('click', plaseChoose)); 
 };
 
-// Функция выбора мест
+// Функция выбора мест 
 function plaseChoose(event) {
   let chair = event.target;
   if (!chair.classList.contains('conf-step__chair_taken')) {
@@ -55,6 +44,7 @@ function plaseChoose(event) {
 button.addEventListener('click', bookChairs);
 // Функция бронирования мест
 function bookChairs(event) {
+
   let booked = '';
   let price = 0;
   hallConfiguration.querySelectorAll('.conf-step__row').forEach((row, rowIndex) =>{

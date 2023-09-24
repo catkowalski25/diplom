@@ -3,6 +3,7 @@ let storedData;
 let currTime = new Date();
 let zeroTime = new Date();
 zeroTime.setHours(0, 0, 0, 0);
+let timeStamp = Math.trunc((new Date(zeroTime.getTime())) / 1000);
 let currMinutes =  Math.round((currTime-zeroTime)/1000/60);
 
 const weekDays = {
@@ -49,26 +50,11 @@ function changeDay(event) {
 };
 
 // рисуем раздел Main 1 раз через запрос данных с сервера
-mainGetData(currMinutes);
-
-// Функция для запроса данных с сервера
-function mainGetData(currMinutes = 0) {
-  fetch('https://jscp-diplom.netoserver.ru/', {
-   method: 'POST', 
-   body: 'event=update', 
-   headers: {
-     'Content-type': '	application/x-www-form-urlencoded',
-   },
- })
-.then((response) => response.json())
-.then((data) => {
-   storedData = data;
-   mainPainting(data, currMinutes);
-});
-};
+requestData('event=update', mainPainting, currMinutes);
 
 // Функция для отрисовки раздела main
 function mainPainting(data, currMinutes) {
+  storedData = data;
    const films = data.films.result;
    const seances = data.seances.result;
    const halls = data.halls.result;
@@ -137,6 +123,7 @@ function chosenSession(event) {
   localStorage.clear();
 
   let dayTimeStamp = 0; 
+  console.log(dayTimeStamp);
   document.querySelectorAll('.page-nav__day').forEach((a, index) => {
     if (a.classList.contains('page-nav__day_chosen')) {
       dayTimeStamp = index * 24 * 3600;
@@ -152,7 +139,7 @@ function chosenSession(event) {
     if (seance.seance_id === selectedSeance.seanceid){
       localStorage.setItem('seanceId',seance.seance_id);
       localStorage.setItem('seanceStart',seance.seance_time);
-      localStorage.setItem('timestamp',  `${+seance.seance_start * 60 + dayTimeStamp}`);      
+      localStorage.setItem('timestamp',  `${+seance.seance_start * 60 + dayTimeStamp + timeStamp}`);      
     };
   });
   storedData.halls.result.forEach(hall => {

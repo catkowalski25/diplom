@@ -6,21 +6,12 @@ document.querySelector('.ticket__chairs').innerHTML = localStorage.getItem('book
 const button = document.querySelector('.acceptin-button');
 
 button.addEventListener('click', getBooking);
-function getBooking(event) {
-   event.preventDefault();
+function getBooking() {
    const timestamp = localStorage.getItem('timestamp');
    const hallId = localStorage.getItem('hallId');
    const seanceId = localStorage.getItem('seanceId');
    const hallConfiguration = localStorage.getItem('hallConfigBooked');
-   fetch('https://jscp-diplom.netoserver.ru/', {
-    method: 'POST', 
-    body: `event=sale_add&timestamp=${timestamp}&hallId=${hallId}&seanceId=${seanceId}&hallConfiguration=${hallConfiguration}`, 
-    headers: {
-      'Content-type': '	application/x-www-form-urlencoded',
-    },
-  })
- .then((response) => response.json())
- .then((data) => {
-    console.log(data);
- });
+   const body = `event=sale_add&timestamp=${timestamp}&hallId=${hallId}&seanceId=${seanceId}&hallConfiguration=${hallConfiguration}`
+   requestData(body, console.log);
 };
+
