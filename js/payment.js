@@ -12,6 +12,13 @@ function getBooking() {
    const seanceId = localStorage.getItem('seanceId');
    const hallConfiguration = localStorage.getItem('hallConfigBooked');
    const body = `event=sale_add&timestamp=${timestamp}&hallId=${hallId}&seanceId=${seanceId}&hallConfiguration=${hallConfiguration}`
-   requestData(body, console.log);
+   requestData(body, checkUnswer); 
 };
 
+function checkUnswer(data) {
+   if (data){
+      document.location.href='ticket.html';
+   } else {
+      console.log("Error: server not unswered");
+   };
+};

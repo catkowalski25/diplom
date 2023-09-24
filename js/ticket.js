@@ -8,4 +8,4 @@ const qrString = `Фильм "${localStorage.getItem('filmName')}" в ${localSto
 const qr = QRCreator(qrString);
 document.querySelector('.ticket__info-qr').append(qr.result);
 
-document.querySelector('.acceptin-button').addEventListener('click', () => qr.download())
+document.querySelector('.acceptin-button').addEventListener('click', () => qr.download());
